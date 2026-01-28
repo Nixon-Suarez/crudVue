@@ -1,6 +1,7 @@
 <?php
 require_once "../../config/app.php";
 require_once "../../autoload.php";
+
 use app\controllers\userController;
 
 $response['success'] = false;
@@ -28,9 +29,9 @@ if(isset($_REQUEST['opc'])){
             $response['alert'] = $res['alerta'];
             break;
         case 'create':
-            $name = $_POST['name'];
-            $email = $_POST['email'];
-            $file = $_FILES['file']['name'];
+            $name = isset($_POST['name']) ? $_POST['name'] : '';
+            $email = isset($_POST['email']) ? $_POST['email'] : '';
+            $file = isset($_FILES['file']['name']) ? $_FILES['file']['name'] : '';
             $res = $insUser->createUser($name, $email, $file);
             if($res['respuesta']){
                 $response['success'] = true;

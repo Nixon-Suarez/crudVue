@@ -47,42 +47,42 @@ class userController extends mainModel{
             $email
         ];
         if (in_array("", $campos, true)) {
-            $alerta = json_encode([
+            $alerta = [
                 "tipo" => "simple",
                 "titulo" => "Error",
                 "texto" => "No has llenado todos los campos obligatorios",
                 "icono" => "error"
-            ]);
+            ];
             return ["respuesta" => false, "alerta" => $alerta];
         }
         #Verificando integridad de los datos
         if ($this->verificarDatos("^(?!\s*$)[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s]{1,150}$", $name)) {
-            $alerta = json_encode([
+            $alerta = [ 
                 "tipo" => "simple",
                 "titulo" => "Ocurrio un error inesperado",
                 "texto" => "El nombre del usuario no coincide con el formato solicitado",
                 "icono" => "error"
-            ]);
+            ];
             return ["respuesta" => false, "alerta" => $alerta];
         }
         if(filter_var( $email, FILTER_VALIDATE_EMAIL)){ # verifica si el email es valido
             $check_email = User::where("email", $email)->first();
             if($check_email){
-                $alerta = json_encode([
+                $alerta = [
                     "tipo" => "simple",
                     "titulo" => "Ocurrio un error inesperado",
-                    "texto" => "El email no es valido",
+                    "texto" => "El email ya está registrado",
                     "icono" => "error"
-                ]);
+                ];
                 return ["respuesta" => false, "alerta" => $alerta];
             }
         }else{
-            $alerta = json_encode([
+            $alerta = [
                 "tipo" => "simple",
                 "titulo" => "Ocurrio un error inesperado",
                 "texto" => "El email no es valido",
                 "icono" => "error"
-            ]);
+            ];
             return ["respuesta" => false, "alerta" => $alerta];
         }
         $doc_dir = "../img/uploads/usuarios/";
@@ -90,12 +90,12 @@ class userController extends mainModel{
             //  creando directorio si no existe
             if (!file_exists($doc_dir)) {
                 if (!mkdir($doc_dir, 0777)) {
-                    $alerta = json_encode([
+                    $alerta = [
                         "tipo" => "simple",
                         "titulo" => "Ocurrio un error inesperado",
                         "texto" => "No se pudo crear el directorio",
                         "icono" => "error"
-                    ]);
+                    ];
                     return ["respuesta" => false, "alerta" => $alerta];
                 }
             }
@@ -109,22 +109,22 @@ class userController extends mainModel{
             $mimeArchivo = mime_content_type($_FILES['file']['tmp_name']);
 
             if (!in_array($mimeArchivo, $mimePermitidos)) {
-                $alerta = json_encode([
+                $alerta = [
                     "tipo" => "simple",
                     "titulo" => "Ocurrió un error inesperado",
                     "texto" => "Archivo no permitido, solo se permiten archivos .jpg, .jpeg, .png",
                     "icono" => "error"
-                ]);
+                ];
                 return ["respuesta" => false, "alerta" => $alerta];
             }
             # limitar el peso del archivo
             if (($_FILES['file']['size'] / 1024) > 10000) { // 10MB
-                $alerta = json_encode([
+                $alerta = [
                     "tipo" => "simple",
                     "titulo" => "Ocurrio un error inesperado",
                     "texto" => "El archivo no puede ser mayor a 10MB",
                     "icono" => "error"
-                ]);
+                ];
                 return ["respuesta" => false, "alerta" => $alerta];
             }
             #Extencion del archivo
@@ -150,21 +150,21 @@ class userController extends mainModel{
 
             // mover la img al directorio de imagenes
             if (!move_uploaded_file($_FILES['file']['tmp_name'], $doc_dir . $archivo_usuario)) {
-                $alerta = json_encode([
+                $alerta = [
                     "tipo" => "simple",
                     "titulo" => "Ocurrio un error inesperado",
                     "texto" => "Error al subir el archivo, intente nuevamente",
                     "icono" => "error"
-                ]);
+                ];
                 return ["respuesta" => false, "alerta" => $alerta];
             }
         } else {
-            $alerta = json_encode([
+            $alerta = [
                 "tipo" => "simple",
                 "titulo" => "Ocurrio un error inesperado",
                 "texto" => "Debe seleccionar un adjunto",
                 "icono" => "error"
-            ]);
+            ];
             return ["respuesta" => false, "alerta" => $alerta];
         }
         $datos_usuario_reg = [
@@ -175,29 +175,29 @@ class userController extends mainModel{
         try {
             $nuevo_usuario = User::create($datos_usuario_reg);
             if ($nuevo_usuario) {
-                $alerta = json_encode([
+                $alerta = [
                     "tipo" => "recargar",
                     "titulo" => "Usuario creado",
                     "texto" => "Usuario ha sido añadido exitosamente",
                     "icono" => "success",
-                ]);
+                ];
                 return ["respuesta" => true, "alerta" => $alerta];
             } else {
-                $alerta = json_encode([
+                $alerta = [
                     "tipo" => "simple",
                     "titulo" => "Error",
                     "texto" => "No se pudo añadir al usuario, por favor intente nuevamente",
                     "icono" => "error"
-                ]);
+                ];
                 return ["respuesta" => false, "alerta" => $alerta,];
             }
         } catch (\Exception $e) {
-            $alerta = json_encode([
+            $alerta = [
                 "tipo" => "simple",
                 "titulo" => "Error",
                 "texto" => "Ocurrió un error al procesar la solicitud: " . $e->getMessage(),
                 "icono" => "error"
-            ]);
+            ];
             return ["respuesta" => false, "alerta" => $alerta];
         }
     }
@@ -214,23 +214,23 @@ class userController extends mainModel{
             $id
         ];
         if (in_array("", $campos, true)) {
-            $alerta = json_encode([
+            $alerta = [
                 "tipo" => "simple",
                 "titulo" => "Error",
                 "texto" => "No has llenado todos los campos obligatorios",
                 "icono" => "error"
-            ]);
+            ];
             return ["respuesta" => false, "alerta" => $alerta];
         }
         // verifica que el usuario exista
         $check_user = User::where("id", $id)->first();
         if(!$check_user){
-            $alerta = json_encode([
+            $alerta = [
                 "tipo" => "simple",
                 "titulo" => "Ocurrio un error inesperado",
                 "texto" => "El usuario no existe",
                 "icono" => "error"
-            ]);
+            ];
             return ["respuesta" => false, "alerta" => $alerta];
         }
         $current_id = $check_user->id;
@@ -241,12 +241,12 @@ class userController extends mainModel{
         if ($name != $current_name){
             #Verificando integridad de los datos
             if ($this->verificarDatos("^(?!\s*$)[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s]{1,150}$", $name)) {
-                $alerta = json_encode([
+                $alerta = [
                     "tipo" => "simple",
                     "titulo" => "Ocurrio un error inesperado",
                     "texto" => "El nombre del usuario no coincide con el formato solicitado",
                     "icono" => "error"
-                ]);
+                ];
                 return ["respuesta" => false, "alerta" => $alerta];
             }
         }
@@ -256,21 +256,21 @@ class userController extends mainModel{
                     ->where("id", "!=", $id)
                     ->first();
                 if($check_email){
-                    $alerta = json_encode([
+                    $alerta = [
                         "tipo" => "simple",
                         "titulo" => "Ocurrio un error inesperado",
                         "texto" => "El email ya está registrado",
                         "icono" => "error"
-                    ]);
+                    ];
                     return ["respuesta" => false, "alerta" => $alerta];
                 }
             }else{
-                $alerta = json_encode([
+                $alerta = [
                     "tipo" => "simple",
                     "titulo" => "Ocurrio un error inesperado",
                     "texto" => "El email no es valido",
                     "icono" => "error"
-                ]);
+                ];
                 return ["respuesta" => false, "alerta" => $alerta];
             }
         }
@@ -279,12 +279,12 @@ class userController extends mainModel{
             //  creando directorio si no existe
             if (!file_exists($doc_dir)) {
                 if (!mkdir($doc_dir, 0777)) {
-                    $alerta = json_encode([
+                    $alerta = [
                         "tipo" => "simple",
                         "titulo" => "Ocurrio un error inesperado",
                         "texto" => "No se pudo crear el directorio",
                         "icono" => "error"
-                    ]);
+                    ];
                     return ["respuesta" => false, "alerta" => $alerta];
                 }
             }
@@ -298,22 +298,22 @@ class userController extends mainModel{
             $mimeArchivo = mime_content_type($_FILES['file']['tmp_name']);
 
             if (!in_array($mimeArchivo, $mimePermitidos)) {
-                $alerta = json_encode([
+                $alerta = [
                     "tipo" => "simple",
                     "titulo" => "Ocurrió un error inesperado",
                     "texto" => "Archivo no permitido, solo se permiten archivos .jpg, .jpeg, .png",
                     "icono" => "error"
-                ]);
+                ];
                 return ["respuesta" => false, "alerta" => $alerta];
             }
             # limitar el peso del archivo
             if (($_FILES['file']['size'] / 1024) > 10000) { // 10MB
-                $alerta = json_encode([
+                $alerta = [
                     "tipo" => "simple",
                     "titulo" => "Ocurrio un error inesperado",
                     "texto" => "El archivo no puede ser mayor a 10MB",
                     "icono" => "error"
-                ]);
+                ];
                 return ["respuesta" => false, "alerta" => $alerta];
             }
             #Extencion del archivo
@@ -339,12 +339,12 @@ class userController extends mainModel{
 
             // mover la img al directorio de imagenes
             if (!move_uploaded_file($_FILES['file']['tmp_name'], $doc_dir . $archivo_usuario)) {
-                $alerta = json_encode([
+                $alerta = [
                     "tipo" => "simple",
                     "titulo" => "Ocurrio un error inesperado",
                     "texto" => "Error al subir el archivo, intente nuevamente",
                     "icono" => "error"
-                ]);
+                ];
                 return ["respuesta" => false, "alerta" => $alerta];
             }
             if (is_file($doc_dir . $check_user->imagen)) { #valida si la img existe en el directorio
@@ -363,29 +363,29 @@ class userController extends mainModel{
             $actualizacion_usuario = User::where("id",$current_id)
                 ->update($datos_usuario_reg);
             if ($actualizacion_usuario){
-                $alerta = json_encode([
+                $alerta = [
                     "tipo" => "recargar",
                     "titulo" => "Usuario actualizado",
                     "texto" => "Usuario ha sido actualizado exitosamente",
                     "icono" => "success",
-                ]);
+                ];
                 return ["respuesta" => true, "alerta" => $alerta];
             } else {
-                $alerta = json_encode([
+                $alerta = [
                     "tipo" => "simple",
                     "titulo" => "Error",
                     "texto" => "No se pudo actualizar al usuario, por favor intente nuevamente",
                     "icono" => "error"
-                ]);
+                ];
                 return ["respuesta" => false, "alerta" => $alerta,];
             }
         } catch (\Exception $e) {
-            $alerta = json_encode([
+            $alerta = [
                 "tipo" => "simple",
                 "titulo" => "Error",
                 "texto" => "Ocurrió un error al procesar la solicitud: " . $e->getMessage(),
                 "icono" => "error"
-            ]);
+            ];
             return ["respuesta" => false, "alerta" => $alerta];
         }
     }
@@ -393,22 +393,22 @@ class userController extends mainModel{
         $id = trim($this->limpiarCadena($id ?? ''));
         try{
             if (!is_numeric($id) || $id <= 0) {
-                $alerta = json_encode([
+                $alerta = [
                     'tipo' => 'simple',
                     'titulo' => 'Error',
                     'texto' => 'ID de usuario no válido',
                     'icono' => 'error'
-                ]);
+                ];
                 return ["respuesta" => false, "alerta" => $alerta];
             }
             $check_user = User::where("id", $id)->first();
             if(!$check_user){
-                $alerta = json_encode([
+                $alerta = [
                     'tipo' => 'simple',
                     'titulo' => 'No encontrado',
                     'texto' => 'El usuario no existe',
                     'icono' => 'error'
-                ]);
+                ];
                 return ["respuesta" => false, "alerta" => $alerta];
             }
             $doc_dir = "../img/uploads/usuarios/";
@@ -436,12 +436,12 @@ class userController extends mainModel{
             }
         }catch (\Exception $e) {
             error_log("Error en eliminargetOfertaDocumentControlar: " . $e->getMessage());
-            $alerta = json_encode([
+            $alerta = [
                 'tipo' => 'simple',
                 'titulo' => 'Error',
                 'texto' => 'Error al cargar la oferta',
                 'icono' => 'error'
-            ]);
+            ];
             return ["respuesta" => false, "alerta" => $alerta];
         }
     }
