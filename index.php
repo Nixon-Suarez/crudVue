@@ -8,6 +8,36 @@ require_once "autoload.php";
 <body>
     <div id="app" class="container mb-4 content">
         <button @click="modalCreateUser=true" class="btn btn-success">Crear</button>
+        <div class="row">
+        <div class="col-md-10 mx-auto">
+            <form class="row g-3"  @submit.prevent="searchUser()">
+                <!-- Nombre -->
+                <div class="col-md-5">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input id="nombre" type="text" name="nombre" 
+                            class="form-control rounded-pill"
+                            placeholder="¿Qué estás buscando?"
+                            maxlength="30"
+                            pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}">
+                </div>
+                <!-- Email -->
+                <div class="col-md-5">
+                    <label for="email" class="form-label">Email</label>
+                    <input id="email" type="text" name="email" 
+                            type="email"
+                            class="form-control rounded-pill"
+                            placeholder="¿Qué estás buscando?"
+                            maxlength="70">
+                </div>
+
+                <!-- Botón -->
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary rounded-pill w-100">
+                        Buscar
+                    </button>
+                </div>
+            </form>
+        </div>
         <div class="table-responsive mt-3">
             <table class="table table-striped table-hover">
                 <thead class="custom-header text-center">

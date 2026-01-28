@@ -19,7 +19,6 @@ const app = Vue.createApp({
             .then(function(response){
                 // console.log(response.data.users)
                 app.users = response.data.users
-                alertas_ajax(response.data.alert);
             })
             .catch(function(error){
                 console.error("Error en la solicitud:", error);
@@ -111,6 +110,35 @@ const app = Vue.createApp({
                 .then(function(response){
                     console.log(response.data)
                     app.getUsers()
+                    alertas_ajax(response.data.alert);
+                })
+                .catch(function(error){
+                    console.error("Error en la solicitud:", error);
+                    Swal.fire(
+                        "Error",
+                        "Ocurrió un error en el servidor",
+                        "error"
+                    );
+                })
+            })
+        },
+        searchUser(){
+            Swal.fire({
+                title: "¿Estás seguro?",
+                text: "Se enviará toda la información",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: "Aceptar",
+                cancelButtonText: "Cancelar"
+            }).then(result => {
+                if (!result.isConfirmed) return;
+                let fd = new FormData()
+                fd.append("name_filtro", document.getElementById("nombre").value)
+                fd.append("email_filtro", document.getElementById("email").value)
+                axios.post(api+"?opc=list", fd)
+                .then(function(response){
+                    console.log(response.data)
+                    app.users = response.data.users
                     alertas_ajax(response.data.alert);
                 })
                 .catch(function(error){

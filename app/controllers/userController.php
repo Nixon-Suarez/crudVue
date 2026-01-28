@@ -14,6 +14,17 @@ class userController extends mainModel{
         $pagina = (isset($pagina) && $pagina > 0) ? (int)$pagina : 1;
         $registros = ($registros > 0) ? (int)$registros : 10;
         $inicio = ($pagina > 0) ? (($registros * $pagina) - $registros) : 0;
+        if(!empty($name)) {
+            if ($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}", $name)) {
+                $alerta = [
+                    "tipo" => "simple",
+                    "titulo" => "Ocurrio un error inesperado",
+                    "texto" => "El nombre del usuario no coincide con el formato solicitado",
+                    "icono" => "error"
+                ];
+                return ["respuesta" => false, "alerta" => $alerta]; 
+            }
+        }
         // consulta
         $query = User::query();
         // Filtro por búsqueda
@@ -23,15 +34,30 @@ class userController extends mainModel{
         if (!empty($name)) {
             $query->where("name", 'LIKE', "%$name%");
         }
-        // $consulta_total = (clone $query)->count();
+        $consulta_total = (clone $query)->count();
 
         $consulta_datos = $query->orderBy('id', 'DESC')
             ->skip($inicio)
             ->take($registros)
             ->get();
 
+        if($consulta_datos){
+            $alerta = [
+                "tipo" => "simple",
+                "titulo" => "Exito",
+                "texto" => "Se han encontrado $consulta_total usuarios",
+                "icono" => "success"
+            ];
+        }else{
+            $alerta = [
+                "tipo" => "simple",
+                "titulo" => "Error",
+                "texto" => "No se han encontrado usuarios",
+                "icono" => "error"
+            ];
+        }
+
         $consulta_datos = $consulta_datos->isNotEmpty() ? $consulta_datos : false;
-        $alerta = "exitos";
 
         return ["respuesta" => $consulta_datos, "alerta" => $alerta]; 
     }

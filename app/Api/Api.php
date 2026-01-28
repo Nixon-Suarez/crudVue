@@ -10,7 +10,9 @@ if(isset($_REQUEST['opc'])){
     $insUser = new userController();
     switch($opc){
         case 'list':
-            $res = $insUser->getUserList();
+            $name = isset($_POST['name_filtro']) ? $_POST['name_filtro'] : '';
+            $email = isset($_POST['email_filtro']) ? $_POST['email_filtro'] : '';
+            $res = $insUser->getUserList(1, 10, $email, $name);
             if($res['respuesta']){
                 $response['success'] = true;
                 $response['users'] = $res['respuesta'];
