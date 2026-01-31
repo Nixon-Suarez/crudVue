@@ -85,7 +85,7 @@ require_once "autoload.php";
                             <div class="mb-3">
                                 <label for="nombreUsuario" class="form-label">Nombres</label>
                                 <label for="nombreUsuario" class="form-label asterisco-obligatorio">*</label>
-                                <input type="text" class="form-control"
+                                <input v-model="form.name" type="text" class="form-control"
                                     id="nombreUsuario" name="nombreUsuario" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}" maxlength="60" required>
                                 </input>
                             </div>
@@ -93,7 +93,7 @@ require_once "autoload.php";
                             <div class="mb-3">
                                 <label for="emailUsuario" class="form-label">Email</label>
                                 <label for="emailUsuario" class="form-label asterisco-obligatorio">*</label>
-                                <input type="email" class="form-control"
+                                <input v-model="form.email" type="email" class="form-control"
                                     id="emailUsuario" name="emailUsuario" maxlength="70" required>
                                 </input>
                             </div>
@@ -101,7 +101,7 @@ require_once "autoload.php";
                             <div class="mb-3 text-center">
                                 <label for="imagenUsuario" class="form-label">Seleccione un archivo</label>
                                 <label for="imagenUsuario" class="form-label asterisco-obligatorio">*</label>
-                                <input class="form-control" type="file" id="imagenUsuario" name="imagenUsuario" accept=".jpg,.jpeg,.png" required>
+                                <input @change="onFileChange" class="form-control" type="file" id="imagenUsuario" name="imagenUsuario" accept=".jpg,.jpeg,.png" required>
                                 <div class="form-text">JPG, JPEG, PNG. (MAX 10MB)</div>
                             </div>
                             <div class="d-grid">
@@ -138,7 +138,7 @@ require_once "autoload.php";
                                 <label for="emailUsuario" class="form-label">Email</label>
                                 <label for="emailUsuario" class="form-label asterisco-obligatorio">*</label>
                                 <input type="email" class="form-control"
-                                    id="emailUsuario" name="emailUsuario" maxlength="70" v-model="currentUser.email"required>
+                                    id="emailUsuario" name="emailUsuario" maxlength="70" v-model="currentUser.email" required>
                                 </input>
                             </div>
                             <!-- imagen -->
@@ -153,7 +153,7 @@ require_once "autoload.php";
                             <div class="mb-3 text-center">
                                 <label for="imagenUsuario" class="form-label">Seleccione un archivo</label>
                                 <label for="imagenUsuario" class="form-label asterisco-obligatorio">*</label>
-                                <input class="form-control" type="file" id="imagenUsuario" name="imagenUsuario" accept=".jpg,.jpeg,.png">
+                                <input @change="onFileChange" class="form-control" type="file" id="imagenUsuario" name="imagenUsuario" accept=".jpg,.jpeg,.png">
                                 <div class="form-text">JPG, JPEG, PNG. (MAX 10MB)</div>
                             </div>
                             <div class="d-grid">

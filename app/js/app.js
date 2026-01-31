@@ -1,5 +1,6 @@
 const api = "http://localhost/php/index.php/CRUD_Vue/app/Api/api.php"
-const app = Vue.createApp({
+const {createApp, ref} = Vue
+const app = createApp({
     data(){ 
         return{
             // message : "Holaa",
@@ -7,7 +8,12 @@ const app = Vue.createApp({
             modalCreateUser : false,
             modalUpdateUser : false,
             users : [],
-            currentUser : {}
+            currentUser : {},
+            form: {
+                name: '',
+                email: '',
+                file: null
+            }
         }
     },
     mounted(){
@@ -40,9 +46,9 @@ const app = Vue.createApp({
             }).then(result => {
                 if (!result.isConfirmed) return;
                 let fd = new FormData()
-                fd.append("name", document.getElementById("nombreUsuario").value)
-                fd.append("email", document.getElementById("emailUsuario").value)
-                fd.append("file", document.getElementById("imagenUsuario").files[0])
+                fd.append("name", app.form.name)
+                fd.append("email", app.form.email)
+                fd.append("file", app.form.file)
 
                 axios.post(api+"?opc=create", fd)
                 .then(function(response){
@@ -72,9 +78,9 @@ const app = Vue.createApp({
                 if (!result.isConfirmed) return;
                 let fd = new FormData()
                 fd.append("id", app.currentUser.id)
-                fd.append("name", document.getElementById("nombreUsuario").value)
-                fd.append("email", document.getElementById("emailUsuario").value)
-                fd.append("file", document.getElementById("imagenUsuario").files[0])
+                fd.append("name", app.currentUser.name)
+                fd.append("email", app.currentUser.email)
+                fd.append("file", app.form.file)
 
                 axios.post(api+"?opc=update", fd)
                 .then(function(response){
@@ -153,7 +159,10 @@ const app = Vue.createApp({
         },
         selectUser(user){
             app.currentUser = user
-        }
+        },
+        onFileChange(e) {
+            this.form.file = e.target.files[0]
+        },
     }
 }).mount("#app")
 

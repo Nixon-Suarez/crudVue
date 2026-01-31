@@ -398,7 +398,7 @@ class userController extends mainModel{
                 return ["respuesta" => true, "alerta" => $alerta];
             } else {
                 $alerta = [
-                    "tipo" => "simple",
+                    "tipo" => "recargar",
                     "titulo" => "Error",
                     "texto" => "No se pudo actualizar al usuario, por favor intente nuevamente",
                     "icono" => "error"
