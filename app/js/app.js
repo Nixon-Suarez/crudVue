@@ -13,7 +13,9 @@ const app = createApp({
                 name: '',
                 email: '',
                 file: null
-            }
+            },
+            searchName: '',
+            searchEmail: ''
         }
     },
     mounted(){
@@ -139,8 +141,8 @@ const app = createApp({
             }).then(result => {
                 if (!result.isConfirmed) return;
                 let fd = new FormData()
-                fd.append("name_filtro", document.getElementById("nombre").value)
-                fd.append("email_filtro", document.getElementById("email").value)
+                fd.append("name_filtro", app.searchName)
+                fd.append("email_filtro", app.searchEmail)
                 axios.post(api+"?opc=list", fd)
                 .then(function(response){
                     console.log(response.data)

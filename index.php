@@ -14,7 +14,7 @@ require_once "autoload.php";
                 <!-- Nombre -->
                 <div class="col-md-5">
                     <label for="nombre" class="form-label">Nombre</label>
-                    <input id="nombre" type="text" name="nombre" 
+                    <input v-model="searchName" id="nombre" type="text" name="nombre" 
                             class="form-control rounded-pill"
                             placeholder="¿Qué estás buscando?"
                             maxlength="30"
@@ -23,7 +23,7 @@ require_once "autoload.php";
                 <!-- Email -->
                 <div class="col-md-5">
                     <label for="email" class="form-label">Email</label>
-                    <input id="email" type="text" name="email" 
+                    <input v-model="searchEmail" id="email" type="text" name="email" 
                             type="email"
                             class="form-control rounded-pill"
                             placeholder="¿Qué estás buscando?"
